@@ -6,11 +6,8 @@ sites:
   - name: Portfolio
     url: https://therealgeo.de
   - name: Sonstige Dienste
-    url: https://therealgeo.de
-  - name: Hacker News
-    url: https://news.ycombinator.com
-  - name: Secret Site
-    url: $SECRET_SITE
+    url: https://status.therealgeo.de
+
 
 status-website:
   # Add your custom domain name, or remove the `cname` line if you don't have a domain
