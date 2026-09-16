@@ -61,7 +61,7 @@
             color: var(--text-main);
         }
 
-        /* Haupt-Status Banner oben */
+        /* Globaler Status Banner oben */
         .status-banner {
             background-color: #ecfdf5;
             border: 1px solid #a7f3d0;
@@ -145,7 +145,7 @@
             color: var(--danger);
         }
 
-        /* Die klassischen Uptime-Balken (Timeline) */
+        /* Balken-Timeline */
         .timeline {
             display: flex;
             gap: 3px;
@@ -158,15 +158,10 @@
             height: 100%;
             background-color: var(--success);
             border-radius: 2px;
-            transition: opacity 0.2s;
         }
 
         .bar.offline {
             background-color: var(--danger);
-        }
-
-        .bar:hover {
-            opacity: 0.7;
         }
 
         .timeline-labels {
@@ -174,6 +169,55 @@
             justify-content: space-between;
             font-size: 0.75rem;
             color: var(--text-muted);
+        }
+
+        /* Die 2 kleinen Extra-Anzeigen unten */
+        .quick-status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .quick-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .quick-card-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .quick-card-status {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mini-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success);
+        }
+
+        .quick-card-status.offline .mini-dot {
+            background-color: var(--danger);
+        }
+
+        .quick-card-status.offline {
+            color: var(--danger);
         }
 
         footer {
@@ -186,7 +230,10 @@
 <body>
 
     <div class="container">
-      
+        <header>
+            <h1>System Status</h1>
+            <a href="https://therealgeo.de" class="back-link">← Zur Hauptseite</a>
+        </header>
 
         <!-- Globaler Status Banner -->
         <div class="status-banner" id="global-banner">
@@ -194,7 +241,7 @@
             <span id="global-text">Alle Systeme normal und betriebsbereit.</span>
         </div>
 
-        <!-- Weisse Box für die Dienste -->
+        <!-- Weisse Box für die Dienste mit Timelines -->
         <div class="card">
             
             <!-- Dienst 1: Portfolio -->
@@ -203,10 +250,7 @@
                     <span class="service-name"><a href="https://therealgeo.de" target="_blank">Portfolio Hauptseite (therealgeo.de)</a></span>
                     <span class="service-badge" id="badge-0">Prüfe...</span>
                 </div>
-                <!-- Klassische Balken-Timeline -->
-                <div class="timeline" id="timeline-0">
-                    <!-- Wird per JS mit Balken gefüllt -->
-                </div>
+                <div class="timeline" id="timeline-0"></div>
                 <div class="timeline-labels">
                     <span>Vor 90 Tagen</span>
                     <span>Heute</span>
@@ -219,10 +263,7 @@
                     <span class="service-name"><a href="https://status.therealgeo.de">Statusseite & Sonstige Dienste</a></span>
                     <span class="service-badge" id="badge-1">Prüfe...</span>
                 </div>
-                <!-- Klassische Balken-Timeline -->
-                <div class="timeline" id="timeline-1">
-                    <!-- Wird per JS mit Balken gefüllt -->
-                </div>
+                <div class="timeline" id="timeline-1"></div>
                 <div class="timeline-labels">
                     <span>Vor 90 Tagen</span>
                     <span>Heute</span>
@@ -231,8 +272,24 @@
 
         </div>
 
+        <!-- 2 kleine Zusatz-Anzeigen unten -->
+        <div class="quick-status-grid">
+            <div class="quick-card">
+                <span class="quick-card-title">therealgeo.de</span>
+                <span class="quick-card-status" id="quick-0">
+                    <div class="mini-dot" id="qdot-0"></div> <span id="qtext-0">Prüfe...</span>
+                </span>
+            </div>
+            <div class="quick-card">
+                <span class="quick-card-title">status.therealgeo.de</span>
+                <span class="quick-card-status" id="quick-1">
+                    <div class="mini-dot" id="qdot-1"></div> <span id="qtext-1">Prüfe...</span>
+                </span>
+            </div>
+        </div>
+
         <footer>
-            Echtzeit-Überwachung
+            Echtzeit-Überwachung über GitHub Pages
         </footer>
     </div>
 
@@ -242,14 +299,12 @@
             { name: "Status", url: "https://status.therealgeo.de" }
         ];
 
-        // Generiert optisch eine Historie aus 30 kleinen Balken
         function generateTimeline(containerId, isOnline) {
             const container = document.getElementById(containerId);
             container.innerHTML = "";
             for (let i = 0; i < 30; i++) {
                 const bar = document.createElement("div");
-                bar.className = "bar" + (isOnline ? "" : (i === 29 ? " offline" : "")); // Simuliert den aktuellen Status am letzten Balken
-                bar.title = isOnline ? "Normal" : "Ausfall erkannt";
+                bar.className = "bar" + (isOnline ? "" : (i === 29 ? " offline" : ""));
                 container.appendChild(bar);
             }
         }
@@ -259,6 +314,8 @@
 
             for (let i = 0; i < services.length; i++) {
                 const badge = document.getElementById(`badge-${i}`);
+                const qText = document.getElementById(`qtext-${i}`);
+                const qBox = document.getElementById(`quick-${i}`);
                 let online = true;
 
                 try {
@@ -271,10 +328,14 @@
                 if (online) {
                     badge.className = "service-badge";
                     badge.innerText = "Operational";
+                    qText.innerText = "ist aktuell Up";
+                    qBox.className = "quick-card-status";
                     generateTimeline(`timeline-${i}`, true);
                 } else {
                     badge.className = "service-badge offline";
                     badge.innerText = "Ausfall";
+                    qText.innerText = "ist aktuell Down";
+                    qBox.className = "quick-card-status offline";
                     generateTimeline(`timeline-${i}`, false);
                 }
             }
