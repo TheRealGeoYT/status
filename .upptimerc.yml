@@ -1,12 +1,12 @@
 # Change these first
-owner: upptime # Your GitHub organization or username, where this repository lives
-repo: upptime # The name of this repository
+owner: TheRealGeoYT
+repo: status
 
 sites:
-  - name: Google
-    url: https://www.google.com
-  - name: Wikipedia
-    url: https://en.wikipedia.org
+  - name: Portfolio
+    url: https://therealgeo.de
+  - name: Sonstige Dienste
+    url: https://therealgeo.de
   - name: Hacker News
     url: https://news.ycombinator.com
   - name: Secret Site
