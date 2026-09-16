@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Status</title>
-    <!-- Schöne, moderne Schriftart (Inter) -->
+    <title>TheRealGeo • Status</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border-color: #334155;
-            --success: #22c55e;
+            --bg-color: #0b0f19;
+            --card-bg: #131d31;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #1f293d;
+            --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
         }
@@ -32,81 +31,75 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            justify-content: center;
+            padding: 20px;
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 520px;
         }
 
         header {
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
+            margin-bottom: 32px;
         }
 
         h1 {
             font-size: 1.5rem;
             font-weight: 600;
+            margin-bottom: 6px;
         }
 
-        .back-link {
+        .subtitle {
+            font-size: 0.9rem;
             color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.875rem;
-            transition: color 0.2s;
         }
 
-        .back-link:hover {
-            color: var(--text-main);
-        }
-
-        /* Gesamt-Status Banner oben */
-        .overall-status {
+        /* Gesamt-Status Banner */
+        .overall-banner {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 18px 24px;
             margin-bottom: 24px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
         }
 
         .status-dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background-color: var(--warning);
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
             flex-shrink: 0;
         }
 
         .status-dot.online {
             background-color: var(--success);
-            box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
         }
 
         .status-dot.offline {
             background-color: var(--danger);
-            box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
         }
 
-        .overall-text h2 {
-            font-size: 1rem;
-            font-weight: 500;
+        .banner-text h2 {
+            font-size: 0.95rem;
+            font-weight: 600;
         }
 
-        .overall-text p {
-            font-size: 0.875rem;
+        .banner-text p {
+            font-size: 0.8rem;
             color: var(--text-muted);
             margin-top: 2px;
         }
 
-        /* Liste der Dienste */
-        .services-list {
+        /* Dienste Karten Container */
+        .services-stack {
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -115,53 +108,60 @@
         .service-card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 16px 20px;
+            border-radius: 12px;
+            padding: 18px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s, transform 0.1s;
         }
 
-        .service-info {
+        .service-card:hover {
+            border-color: #374151;
+            transform: translateY(-1px);
+        }
+
+        .service-meta h3 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .service-meta span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .service-status {
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .service-name {
+            gap: 8px;
+            font-size: 0.85rem;
             font-weight: 500;
-            font-size: 0.95rem;
         }
 
-        .service-status-badge {
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        .mini-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
         }
 
-        .badge-checking {
-            background-color: rgba(148, 163, 184, 0.1);
-            color: var(--text-muted);
-        }
-
-        .badge-online {
-            background-color: rgba(34, 197, 94, 0.1);
-            color: var(--success);
-        }
-
-        .badge-offline {
-            background-color: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-        }
+        .mini-dot.online { background-color: var(--success); }
+        .mini-dot.offline { background-color: var(--danger); }
+        .mini-dot.checking { background-color: var(--warning); }
 
         footer {
-            margin-top: 40px;
+            margin-top: 32px;
+            text-align: center;
             font-size: 0.75rem;
             color: var(--text-muted);
-            text-align: center;
+        }
+
+        footer a {
+            color: var(--text-muted);
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -170,73 +170,78 @@
     <div class="container">
         <header>
             <h1>System Status</h1>
-            <a href="https://therealgeo.de" class="back-link">← Zur Hauptseite</a>
+            <p class="subtitle">Echtzeit-Übersicht aller TheRealGeo Dienste</p>
         </header>
 
-        <!-- Globaler Status -->
-        <div class="overall-status" id="overall-banner">
+        <!-- Globaler Status Header -->
+        <div class="overall-banner" id="overall-banner">
             <div class="status-dot" id="overall-dot"></div>
-            <div class="overall-text">
+            <div class="banner-text">
                 <h2 id="overall-title">Systeme werden überprüft...</h2>
                 <p id="overall-desc">Bitte einen Moment Geduld.</p>
             </div>
         </div>
 
-        <!-- Liste der zu prüfenden Dienste -->
-        <div class="services-list" id="services-container">
-            <!-- Wird dynamisch per JavaScript gefüllt -->
+        <!-- Die 2 Haupt-Dienste -->
+        <div class="services-stack">
+            
+            <!-- Dienst 1: Portfolio -->
+            <a href="https://therealgeo.de" target="_blank" class="service-card">
+                <div class="service-meta">
+                    <h3>Portfolio Hauptseite</h3>
+                    <span>therealgeo.de</span>
+                </div>
+                <div class="service-status">
+                    <span id="status-text-0">Prüfe...</span>
+                    <div class="mini-dot checking" id="status-dot-0"></div>
+                </div>
+            </a>
+
+            <!-- Dienst 2: Statusseite / Sonstige Dienste -->
+            <a href="https://status.therealgeo.de" class="service-card">
+                <div class="service-meta">
+                    <h3>Status & Sonstige Dienste</h3>
+                    <span>status.therealgeo.de</span>
+                </div>
+                <div class="service-status">
+                    <span id="status-text-1">Prüfe...</span>
+                    <div class="mini-dot checking" id="status-dot-1"></div>
+                </div>
+            </a>
+
         </div>
 
         <footer>
-            Automatisch aktualisiert • Läuft über GitHub Pages
+            Betrieben über GitHub Pages • <a href="https://therealgeo.de">Zurück zur Hauptseite</a>
         </footer>
     </div>
 
     <script>
-        // HIER DEINE DIENSTE EINTRAGEN:
         const services = [
-            { name: "Hauptwebsite (therealgeo.de)", url: "https://therealgeo.de" },
-            { name: "Backup / API Server", url: "https://github.com" } // Beispiel durch deine URL ersetzen
+            { name: "Portfolio", url: "https://therealgeo.de" },
+            { name: "Statusseite", url: "https://status.therealgeo.de" }
         ];
 
-        async function checkServices() {
-            const container = document.getElementById("services-container");
-            container.innerHTML = "";
-
+        async function checkStatus() {
             let allOnline = true;
-            let checkedCount = 0;
 
-            for (const service of services) {
-                // HTML-Karte für den Dienst erstellen
-                const card = document.createElement("div");
-                card.className = "service-card";
-                card.innerHTML = `
-                    <div class="service-info">
-                        <span class="service-name">${service.name}</span>
-                    </div>
-                    <span class="service-status-badge badge-checking" id="badge-${checkedCount}">Prüfe...</span>
-                `;
-                container.appendChild(card);
+            for (let i = 0; i < services.length; i++) {
+                const textElem = document.getElementById(`status-text-${i}`);
+                const dotElem = document.getElementById(`status-dot-${i}`);
 
-                const badge = document.getElementById(`badge-${checkedCount}`);
-                
                 try {
-                    // Wir nutzen 'no-cors' oder einen direkten Fetch. 
-                    // Hinweis: Wegen Browser-Sicherheitsrichtlinien (CORS) schlagen manche externen Server fehl, 
-                    // obwohl sie online sind. Für eigene Webseiten klappt es meistens problemlos.
-                    await fetch(service.url, { mode: 'no-cors', cache: 'no-cache' });
-                    
-                    badge.className = "service-status-badge badge-online";
-                    badge.innerText = "Online";
+                    await fetch(services[i].url, { mode: 'no-cors', cache: 'no-cache' });
+                    textElem.innerText = "Online";
+                    textElem.style.color = "var(--success)";
+                    dotElem.className = "mini-dot online";
                 } catch (error) {
                     allOnline = false;
-                    badge.className = "service-status-badge badge-offline";
-                    badge.innerText = "Offline";
+                    textElem.innerText = "Offline";
+                    textElem.style.color = "var(--danger)";
+                    dotElem.className = "mini-dot offline";
                 }
-                checkedCount++;
             }
 
-            // Gesamt-Status anpassen
             const overallDot = document.getElementById("overall-dot");
             const overallTitle = document.getElementById("overall-title");
             const overallDesc = document.getElementById("overall-desc");
@@ -244,19 +249,16 @@
             if (allOnline) {
                 overallDot.className = "status-dot online";
                 overallTitle.innerText = "Alle Systeme betriebsbereit";
-                overallDesc.innerText = "Es wurden keine Störungen festgestellt.";
+                overallDesc.innerText = "Beide Dienste sind fehlerfrei erreichbar.";
             } else {
                 overallDot.className = "status-dot offline";
-                overallTitle.innerText = "Störungen gemeldet";
-                overallDesc.innerText = "Mindestens ein System ist aktuell nicht erreichbar.";
+                overallTitle.innerText = "Störung erkannt";
+                overallDesc.innerText = "Mindestens ein Dienst ist aktuell offline.";
             }
         }
 
-        // Beim Laden ausführen
-        checkServices();
-
-        // Alle 2 Minuten automatisch aktualisieren
-        setInterval(checkServices, 120000);
+        checkStatus();
+        setInterval(checkStatus, 120000); // Alle 2 Minuten aktualisieren
     </script>
 </body>
 </html>
