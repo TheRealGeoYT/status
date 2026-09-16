@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Status</title>
+    <!-- Schöne, moderne Schriftart (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--text-main);
+        }
+
+        /* Gesamt-Status Banner oben */
+        .overall-status {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--warning);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+            flex-shrink: 0;
+        }
+
+        .status-dot.online {
+            background-color: var(--success);
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+        }
+
+        .status-dot.offline {
+            background-color: var(--danger);
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+        }
+
+        .overall-text h2 {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .overall-text p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Liste der Dienste */
+        .services-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .service-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .service-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .service-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .service-status-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-checking {
+            background-color: rgba(148, 163, 184, 0.1);
+            color: var(--text-muted);
+        }
+
+        .badge-online {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+        }
+
+        .badge-offline {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>System Status</h1>
+            <a href="https://therealgeo.de" class="back-link">← Zur Hauptseite</a>
+        </header>
+
+        <!-- Globaler Status -->
+        <div class="overall-status" id="overall-banner">
+            <div class="status-dot" id="overall-dot"></div>
+            <div class="overall-text">
+                <h2 id="overall-title">Systeme werden überprüft...</h2>
+                <p id="overall-desc">Bitte einen Moment Geduld.</p>
+            </div>
+        </div>
+
+        <!-- Liste der zu prüfenden Dienste -->
+        <div class="services-list" id="services-container">
+            <!-- Wird dynamisch per JavaScript gefüllt -->
+        </div>
+
+        <footer>
+            Automatisch aktualisiert • Läuft über GitHub Pages
+        </footer>
+    </div>
+
+    <script>
+        // HIER DEINE DIENSTE EINTRAGEN:
+        const services = [
+            { name: "Hauptwebsite (therealgeo.de)", url: "https://therealgeo.de" },
+            { name: "Backup / API Server", url: "https://github.com" } // Beispiel durch deine URL ersetzen
+        ];
+
+        async function checkServices() {
+            const container = document.getElementById("services-container");
+            container.innerHTML = "";
+
+            let allOnline = true;
+            let checkedCount = 0;
+
+            for (const service of services) {
+                // HTML-Karte für den Dienst erstellen
+                const card = document.createElement("div");
+                card.className = "service-card";
+                card.innerHTML = `
+                    <div class="service-info">
+                        <span class="service-name">${service.name}</span>
+                    </div>
+                    <span class="service-status-badge badge-checking" id="badge-${checkedCount}">Prüfe...</span>
+                `;
+                container.appendChild(card);
+
+                const badge = document.getElementById(`badge-${checkedCount}`);
+                
+                try {
+                    // Wir nutzen 'no-cors' oder einen direkten Fetch. 
+                    // Hinweis: Wegen Browser-Sicherheitsrichtlinien (CORS) schlagen manche externen Server fehl, 
+                    // obwohl sie online sind. Für eigene Webseiten klappt es meistens problemlos.
+                    await fetch(service.url, { mode: 'no-cors', cache: 'no-cache' });
+                    
+                    badge.className = "service-status-badge badge-online";
+                    badge.innerText = "Online";
+                } catch (error) {
+                    allOnline = false;
+                    badge.className = "service-status-badge badge-offline";
+                    badge.innerText = "Offline";
+                }
+                checkedCount++;
+            }
+
+            // Gesamt-Status anpassen
+            const overallDot = document.getElementById("overall-dot");
+            const overallTitle = document.getElementById("overall-title");
+            const overallDesc = document.getElementById("overall-desc");
+
+            if (allOnline) {
+                overallDot.className = "status-dot online";
+                overallTitle.innerText = "Alle Systeme betriebsbereit";
+                overallDesc.innerText = "Es wurden keine Störungen festgestellt.";
+            } else {
+                overallDot.className = "status-dot offline";
+                overallTitle.innerText = "Störungen gemeldet";
+                overallDesc.innerText = "Mindestens ein System ist aktuell nicht erreichbar.";
+            }
+        }
+
+        // Beim Laden ausführen
+        checkServices();
+
+        // Alle 2 Minuten automatisch aktualisieren
+        setInterval(checkServices, 120000);
+    </script>
+</body>
+</html>
