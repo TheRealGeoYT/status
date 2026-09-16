@@ -40,25 +40,12 @@
         }
 
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 24px;
         }
 
         h1 {
             font-size: 1.25rem;
             font-weight: 600;
-        }
-
-        .back-link {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.875rem;
-        }
-
-        .back-link:hover {
-            color: var(--text-main);
         }
 
         /* Globaler Status Banner oben */
@@ -230,7 +217,9 @@
 <body>
 
     <div class="container">
-      
+        <header>
+            <h1>System Status</h1>
+        </header>
 
         <!-- Globaler Status Banner -->
         <div class="status-banner" id="global-banner">
