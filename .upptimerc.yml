@@ -4,7 +4,7 @@ repo: status
 
 sites:
   - name: Portfolio
-    url: https://portfolio.therealgeo.de
+    url: https://therealgeo.de
   - name: Sonstige Dienste
     url: https://status.therealgeo.de
 
