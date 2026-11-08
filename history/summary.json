@@ -4,21 +4,22 @@
     "url": "https://therealgeo.de",
     "icon": "https://icons.duckduckgo.com/ip3/therealgeo.de.ico",
     "slug": "portfolio",
-    "status": "up",
-    "uptime": "98.69%",
-    "uptimeDay": "100.00%",
+    "status": "down",
+    "uptime": "98.70%",
+    "uptimeDay": "99.98%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
-    "uptimeYear": "98.69%",
-    "time": 425,
-    "timeDay": 610,
-    "timeWeek": 423,
-    "timeMonth": 438,
-    "timeYear": 425,
+    "uptimeYear": "98.70%",
+    "time": 418,
+    "timeDay": 311,
+    "timeWeek": 371,
+    "timeMonth": 425,
+    "timeYear": 418,
     "dailyMinutesDown": {
       "2026-09-17": 346,
       "2026-09-16": 591,
-      "2026-09-19": 52
+      "2026-09-19": 52,
+      "2026-11-08": 0
     }
   },
   {
@@ -26,20 +27,21 @@
     "url": "https://status.therealgeo.de",
     "icon": "https://icons.duckduckgo.com/ip3/status.therealgeo.de.ico",
     "slug": "sonstige-dienste",
-    "status": "up",
-    "uptime": "98.80%",
+    "status": "down",
+    "uptime": "98.81%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
-    "uptimeYear": "98.80%",
-    "time": 430,
-    "timeDay": 332,
-    "timeWeek": 488,
-    "timeMonth": 436,
-    "timeYear": 430,
+    "uptimeYear": "98.81%",
+    "time": 422,
+    "timeDay": 172,
+    "timeWeek": 428,
+    "timeMonth": 422,
+    "timeYear": 422,
     "dailyMinutesDown": {
       "2026-09-17": 315,
-      "2026-09-16": 590
+      "2026-09-16": 590,
+      "2026-11-08": 0
     }
   }
 ]
